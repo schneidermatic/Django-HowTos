@@ -1,0 +1,121 @@
+#==============================================================================
+# FILE:          .apprc
+# AUTOHR:        Markus Schneider
+# DATE:          2023-12-24
+# PURPOSE:       App specific run command file.
+#==============================================================================
+APP_ENV=$HOME/.djangohw2s
+
+if [ ! -e $APP_ENV ]
+then
+  cp "$CWD"/../resources/templates/djangohw2s $APP_ENV
+fi
+
+source $HOME/.djangohw2s
+
+if [ -z $PROJECT_HOME ]
+then
+    echo "Please set \$PROJECT_HOME in '$APP_ENV' file!"
+fi
+
+##----------------------------------------
+## CREATE A NEW HOWTO PROJECT
+##----------------------------------------
+app_prj() {
+    PROJECT_NAME=$1
+    PROJECT_PATH=$PROJECT_HOME/"${PROJECT_NAME}"
+
+    if [ ! -e "${PROJECT_PATH}" ]
+    then
+        mkdir -p "${PROJECT_PATH}"
+        cp -r $PROJECT_HOME/resources/templates/app "${PROJECT_PATH}"
+    fi
+}
+
+##----------------------------------------
+## REMOVE A HOWTO PROJECT
+##----------------------------------------
+app_rprj() {
+    PROJECT_NAME=$1
+    PROJECT_PATH=$PROJECT_HOME/"${PROJECT_NAME}"
+
+    if [ -e "${PROJECT_PATH}" ]
+    then
+        rm -r "${PROJECT_PATH}"
+    fi
+}
+
+##----------------------------------------
+## SETUP THE PYTHON VENV
+##----------------------------------------
+app_venv() {
+    if [ ! -e "$CWD"/venv ]
+    then
+        python3 -m venv venv
+        . "$CWD"/venv/bin/activate
+        pip install -r requirements.txt
+    fi
+}
+
+##----------------------------------------
+## REMOVE VENV DIRECTORY
+##----------------------------------------
+app_rvenv() {
+    if [ -e "$CWD"/venv ]
+    then
+        rm -rf "$CWD"/venv
+    fi
+}
+
+##----------------------------------------
+## CREATE A NEW DJANGO APP
+##----------------------------------------
+app_dj() {
+    if [ -e "$CWD"/venv ] && [ ! -e "$CWD"/app ]
+    then
+        . "$CWD"/venv/bin/activate
+        django-admin startproject app
+    fi
+}
+
+##----------------------------------------
+## REMOVE DJANGO APP
+##----------------------------------------
+app_rdj() {
+    if [ -e "$CWD"/app ]
+    then
+        rm -rf "$CWD"/app
+    fi
+}
+
+##----------------------------------------
+## RUN THE DJANGO APP
+##----------------------------------------
+app_run() {
+    app_setup
+    cd "$CWD"/app
+    python manage.py runserver
+}
+
+##----------------------------------------
+## SHOW BANNER
+##----------------------------------------
+app_banner() {
+ascii_art="  ___  _                    
+ |   \\(_)__ _ _ _  __ _ ___ 
+ | |) | / _\` | ' \\/ _\` / _ \\ 
+ |___// \\__,_|_||_\\__, \\___/
+    |__/          |___/
+---------- "
+echo "$ascii_art"
+}  
+
+##########################################
+##########################################
+#####   ---   ALL COMMANDS    ---    #####
+##########################################
+##########################################
+app_ls() {
+  app_banner
+  declare -F | grep "app_" | sed -E 's/declare -f //'
+}
