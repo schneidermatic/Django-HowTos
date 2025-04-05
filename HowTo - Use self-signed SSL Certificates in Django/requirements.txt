@@ -1,0 +1,4 @@
+pyOpenSSL
+werkzeug
+django
+django-extensions
