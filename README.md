@@ -29,7 +29,7 @@ docker-compose | v2.10.
 ## CONTENT
 Id  | Description                                                          
 ----|----------------------------------------------------------------------
-001 | [HowTo - Create an 'Hello World' App with Django](https://github.com/schneidermatic/Django-HowTos/tree/develop/HowTo%20-%20Create%20an%20'Hello%20World'%20App%20with%20Django/app)
+001 | [HowTo - Create an 'Hello World' App with Django](https://github.com/schneidermatic/Django-HowTos/tree/develop/HowTo%20-%20Create%20an%20'Hello%20World'%20App%20with%20Django)
 
 
 ## SETUP
