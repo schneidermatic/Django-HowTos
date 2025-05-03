@@ -1,14 +1,14 @@
 #==============================================================================
 # FILE:          .apprc
 # AUTOHR:        Markus Schneider
-# DATE:          2023-12-24
+# DATE:          2025-05-03
 # PURPOSE:       App specific run command file.
 #==============================================================================
 APP_ENV=$HOME/.djangohw2s
 
 if [ ! -e $APP_ENV ]
 then
-  cp "$CWD"/../resources/templates/djangohw2s $APP_ENV
+  cp "$CWD"/../assets/templates/djangohw2s $APP_ENV
 fi
 
 source $HOME/.djangohw2s
@@ -19,23 +19,34 @@ then
 fi
 
 ##----------------------------------------
-## CREATE A NEW HOWTO PROJECT
+## MAKE A NEW HOWTO PROJECT
 ##----------------------------------------
-app_prj() {
+app_mkhw2() {
     PROJECT_NAME=$1
     PROJECT_PATH=$PROJECT_HOME/"${PROJECT_NAME}"
 
     if [ ! -e "${PROJECT_PATH}" ]
     then
         mkdir -p "${PROJECT_PATH}"
-        cp -r $PROJECT_HOME/resources/templates/app "${PROJECT_PATH}"
+        cp -r $PROJECT_HOME/assets/templates/app "${PROJECT_PATH}"
     fi
+}
+
+
+##----------------------------------------
+## REMOVE ALL '__pycache__' FOLDERS
+##----------------------------------------
+app_rmpyc() {
+  local start_dir="${1:-.}"
+  echo "Searching for __pycache__ directories in $start_dir..."
+  find "$start_dir" -type d -name "__pycache__" -exec rm -r {} + -print
+  echo "All __pycache__ directories deleted."
 }
 
 ##----------------------------------------
 ## REMOVE A HOWTO PROJECT
 ##----------------------------------------
-app_rprj() {
+app_rmhw2() {
     PROJECT_NAME=$1
     PROJECT_PATH=$PROJECT_HOME/"${PROJECT_NAME}"
 
@@ -48,7 +59,7 @@ app_rprj() {
 ##----------------------------------------
 ## SETUP THE PYTHON VENV
 ##----------------------------------------
-app_venv() {
+app_mkvenv() {
     if [ ! -e "$CWD"/venv ]
     then
         python3 -m venv venv
@@ -60,7 +71,7 @@ app_venv() {
 ##----------------------------------------
 ## REMOVE VENV DIRECTORY
 ##----------------------------------------
-app_rvenv() {
+app_rmvenv() {
     if [ -e "$CWD"/venv ]
     then
         rm -rf "$CWD"/venv
@@ -68,20 +79,35 @@ app_rvenv() {
 }
 
 ##----------------------------------------
-## CREATE A NEW DJANGO APP
+## MAKE A NEW DJANGO PROJECT
 ##----------------------------------------
-app_dj() {
+app_mkpro() {
+    local project_name="${1:-app}"
     if [ -e "$CWD"/venv ] && [ ! -e "$CWD"/app ]
     then
         . "$CWD"/venv/bin/activate
-        django-admin startproject app
+        django-admin startproject $project_name
     fi
 }
 
 ##----------------------------------------
-## REMOVE DJANGO APP
+## MAKE A NEW DJANGO PROJECT
 ##----------------------------------------
-app_rdj() {
+app_mkapp() {
+    local app_name="${1:-core}"
+    if [ -e "$CWD"/venv ] && [ ! -e "$CWD"/app ]
+    then
+        . "$CWD"/venv/bin/activate
+        cd "$CWD"/app
+        python manage.py startapp $app_name
+        cd "$CWD"
+    fi
+}
+
+##----------------------------------------
+## REMOVE DJANGO PROJECT
+##----------------------------------------
+app_rmpro() {
     if [ -e "$CWD"/app ]
     then
         rm -rf "$CWD"/app
@@ -89,7 +115,7 @@ app_rdj() {
 }
 
 ##----------------------------------------
-## RUN THE DJANGO APP
+## RUN DJANGO APP
 ##----------------------------------------
 app_run() {
     app_setup

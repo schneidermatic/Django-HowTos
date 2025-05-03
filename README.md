@@ -1,6 +1,6 @@
 # Django-HowTos
 
-<img src="https://github.com/schneidermatic/Django-HowTos/blob/develop/resources/images/Logo01.png" width="250">
+<img src="https://github.com/schneidermatic/Django-HowTos/blob/develop/assets/images/Logo01.png" width="250">
 
 This repository contains a collection of Django-HowTos for learning/demo purposes.
 
@@ -56,20 +56,23 @@ Id  | Description
         $ cd Django-HowTos/"HowTo - Create an 'Hello World' App with Django"
         $ app_ls
 
-          _   _  _____        _______ ___
-         | | | |/ _ \ \      / /_   _/ _ \ ___
-         | |_| | | | \ \ /\ / /  | || | | / __|
-         |  _  | |_| |\ V  V /   | || |_| \__ \
-         |_| |_|\___/  \_/\_/    |_| \___/|___/
-        
+         ___  _
+        |   \(_)__ _ _ _  __ _ ___
+        | |) | / _` | ' \/ _` / _ \
+        |___// \__,_|_||_\__, \___/
+           |__/          |___/
         ----------
         app_banner
         app_ls
-        app_new
-        app_purge
-        app_rm
+        app_mkapp
+        app_mkhw2
+        app_mkpro
+        app_mkvenv
+        app_rmhw2
+        app_rmpro
+        app_rmpyc
+        app_rmvenv
         app_run
-        app_setup
 
 4. Run the APP
 
